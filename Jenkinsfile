@@ -18,11 +18,15 @@ pipeline {
                     }
                 }
         stage('Archive atifacts'){
-        	archiveArtifacts artifacts: '**/*.war', onlyIfSuccessful: true
+            steps {
+                archiveArtifacts artifacts: '**/*.war', onlyIfSuccessful: true
+            }
     	}
     	stage('Deploy To Tomcat'){
+            steps {
         	sshagent(credentials: ['ubuntu_user']) {
              	sh "scp -o StrictHostKeyChecking=no target/sparkjava-hello-world-1.0.war ubuntu@3.92.2.158:/var/lib/tomcat9/webapps/"
+                }
             }
         }
          post {
