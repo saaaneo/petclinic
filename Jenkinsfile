@@ -22,8 +22,8 @@ pipeline {
     	stage('Deploy To Tomcat'){
         	sshagent(credentials: ['ubuntu_user']) {
              	sh "scp -o StrictHostKeyChecking=no target/sparkjava-hello-world-1.0.war ubuntu@3.92.2.158:/var/lib/tomcat9/webapps/"
+            }
         }
-
             post {
             	always {
            		recordIssues(enabledForFailure: true, aggregatingResults: true, 
