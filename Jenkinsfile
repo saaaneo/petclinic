@@ -29,6 +29,7 @@ pipeline {
                 }
             }
         }
+        stage('Post Results') {
          post {
             	always {
            		recordIssues(enabledForFailure: true, aggregatingResults: true, 
@@ -37,4 +38,5 @@ pipeline {
         	    }
             }
         }
+    }
 }
