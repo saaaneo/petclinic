@@ -10,10 +10,10 @@ pipeline {
         stage('Build') {
             steps {
                 // Get some code from a GitHub repository
-                git 'https://github.com/ravdy/petclinic'
+                git 'https://github.com/saaaneo/petclinic'
 
                 // Run Maven on a Unix agent.
-                sh "mvn -f pom.xml checkstyle:checkstyle findbugs:findbugs pmd:pmd"
+                sh "mvn -f pom.xml clean package checkstyle:checkstyle findbugs:findbugs pmd:pmd"
 
                     }
             post {
