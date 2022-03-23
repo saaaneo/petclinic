@@ -16,7 +16,13 @@ pipeline {
                 sh "mvn -f pom.xml checkstyle:checkstyle findbugs:findbugs pmd:pmd"
 
                     }
+            post {
+            	always {
+           		recordIssues(enabledForFailure: true, aggregatingResults: true, 
+               	tools: [java(), checkStyle(pattern: 'checkstyle-result.xml', reportEncoding: 'UTF-8'), findBugs(pattern: 'findbugs.xml')])               
+        	        }
                 }
+             }
         stage('Archive atifacts'){
             steps {
                 archiveArtifacts artifacts: '**/*.war', onlyIfSuccessful: true
@@ -27,15 +33,6 @@ pipeline {
         	sshagent(credentials: ['ubuntu_user']) {
              	sh "scp -o StrictHostKeyChecking=no target/sparkjava-hello-world-1.0.war ubuntu@3.92.2.158:/var/lib/tomcat9/webapps/"
                 }
-            }
-        }
-        stage('Post Results') {
-         post {
-            	always {
-           		recordIssues(enabledForFailure: true, aggregatingResults: true, 
-               	tools: [java(), checkStyle(pattern: 'checkstyle-result.xml', reportEncoding: 'UTF-8'), findBugs(pattern: 'findbugs.xml')]
-           		)               
-        	    }
             }
         }
     }
